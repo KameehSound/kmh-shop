@@ -2,9 +2,12 @@
 
 import { useRef, useState } from "react";
 
+
+
 /* =========================
    BEAT PLAYER
 ========================= */
+
 function BeatCard({
   title,
   file,
@@ -14,58 +17,105 @@ function BeatCard({
   file: string;
   bpm: string;
 }) {
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
+
+
   const togglePlay = () => {
+
     if (!audioRef.current) return;
+
 
     if (playing) {
+
       audioRef.current.pause();
       setPlaying(false);
+
     } else {
+
       audioRef.current.play();
       setPlaying(true);
+
     }
+
   };
+
+
 
   const onTimeUpdate = () => {
+
     if (!audioRef.current) return;
+
+
     const percent =
       (audioRef.current.currentTime / audioRef.current.duration) * 100;
+
+
     setProgress(percent || 0);
+
   };
 
+
+
   return (
+
     <div className="bg-white p-5 shadow-lg rounded-2xl hover:shadow-2xl transition">
 
-      <img
-  src="/covers/kmh.png"
-  alt={title}
-  className="h-44 w-full object-cover rounded-xl mb-4"
-/>
 
-      <p className="font-semibold text-lg">{title}</p>
-      <p className="text-sm text-black/60 mb-4">{bpm}</p>
+      <img
+        src="/covers/kmh.png"
+        alt={title}
+        className="h-44 w-full object-cover rounded-xl mb-4"
+      />
+
+
+
+      <p className="font-semibold text-lg">
+        {title}
+      </p>
+
+
+
+      <p className="text-sm text-black/60 mb-4">
+        {bpm}
+      </p>
+
+
 
       <div className="flex items-center gap-3">
+
 
         <button
           onClick={togglePlay}
           className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition"
         >
+
           {playing ? "❚❚" : "▶"}
+
         </button>
 
+
+
         <div className="flex-1 h-2 bg-black/10 rounded-full overflow-hidden">
+
+
           <div
             className="h-full bg-black transition-all"
-            style={{ width: `${progress}%` }}
+            style={{
+              width:`${progress}%`
+            }}
           />
+
         </div>
 
+
       </div>
+
+
+
 
       <audio
         ref={audioRef}
@@ -73,282 +123,576 @@ function BeatCard({
         onTimeUpdate={onTimeUpdate}
         onEnded={() => setPlaying(false)}
       />
+
+
     </div>
+
   );
+
 }
+
+
+
+
 
 /* =========================
    PORTFOLIO CARD
 ========================= */
+
+
 function PortfolioCard({
   title,
   subtitle,
   videoId,
   views,
 }: {
-  title: string;
-  subtitle: string;
-  videoId: string;
-  views: string;
+  title:string;
+  subtitle:string;
+  videoId:string;
+  views:string;
 }) {
-  const [playing, setPlaying] = useState(false);
+
+
+  const [playing,setPlaying] = useState(false);
+
+
 
   return (
+
     <div className="bg-white p-4 shadow-lg hover:scale-105 transition rounded-2xl">
+
 
       <div className="relative h-48 mb-3 bg-black rounded-xl overflow-hidden">
 
-        {playing ? (
-          <iframe
-            className="w-full h-full"
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-            allowFullScreen
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
+
+        <iframe
+          className="w-full h-full"
+          src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&mute=1`}
+          allow="autoplay; fullscreen"
+          allowFullScreen
+        />
+
+
+
+        {!playing && (
+
+          <div className="absolute inset-0">
+
+
+            <img
+              src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
+
+
 
             <button
               onClick={() => setPlaying(true)}
-              className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition"
+              className="absolute inset-0 flex items-center justify-center"
             >
-              ▶
+
+
+              <div className="w-14 h-14 rounded-full bg-black/80 text-white flex items-center justify-center hover:scale-110 transition">
+
+                ▶
+
+              </div>
+
+
             </button>
 
+
+
           </div>
+
         )}
+
 
       </div>
 
-      <p className="font-semibold">{title}</p>
-      <p className="text-sm text-black/60">{subtitle}</p>
-      <p className="text-xs text-black/50 mt-1">{views} views</p>
+
+
+
+
+      <p className="font-semibold">
+        {title}
+      </p>
+
+
+      <p className="text-sm text-black/60">
+        {subtitle}
+      </p>
+
+
+      <p className="text-xs text-black/50 mt-1">
+        {views} views
+      </p>
+
 
     </div>
+
   );
+
 }
 
-/* =========================
-   HOME
-========================= */
+
+
+
+
+
+
 export default function Home() {
-  return (
-    <main className="bg-[#f5f1e8] text-black">
 
-      {/* NAVBAR */}
-      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-5 border-b border-black/10 bg-[#f5f1e8]/80 backdrop-blur">
 
-        <h1 className="text-lg font-bold tracking-widest">KAMEEH</h1>
+return (
 
-        <nav className="flex gap-3 text-sm">
+<main className="bg-[#f5f1e8] text-black">
 
-          <a href="/portfolio" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
-            Portfolio
-          </a>
 
-          <a href="/beats" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
-            Beats
-          </a>
 
-          <a href="/services" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
-            Servicios
-          </a>
+<header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-5 border-b border-black/10 bg-[#f5f1e8]/80 backdrop-blur">
 
-          <a href="/contacto" className="px-4 py-2 bg-black text-white shadow-lg rounded-full hover:-translate-y-1 transition">
-            Contacto
-          </a>
 
-        </nav>
+<h1 className="text-lg font-bold tracking-widest">
+KAMEEH
+</h1>
 
-      </header>
 
-      {/* HERO */}
-      <section className="h-[90vh] flex items-center justify-center text-center relative mt-16 overflow-hidden">
 
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04')",
-          }}
-        />
+<nav className="flex gap-3 text-sm">
 
-        <div className="absolute inset-0 bg-black/60" />
 
-        <div className="relative z-10 px-6 max-w-3xl text-white">
+<a href="/portfolio" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
+Portfolio
+</a>
 
-          <h2 className="text-4xl md:text-6xl font-bold leading-tight">
-            Transformando ideas en sonido
-          </h2>
 
-          <p className="mt-6 text-white/80 text-lg">
-            Mezcla, mastering y producción musical profesional.
+<a href="/beats" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
+Beats
+</a>
 
-            Más de 100 proyectos realizados. Más de 600.000 reproducciones en plataformas digitales.
-          </p>
 
-          <div className="flex flex-col md:flex-row gap-4 justify-center mt-10">
+<a href="/services" className="px-4 py-2 bg-white/70 shadow-sm rounded-full hover:-translate-y-1 transition">
+Servicios
+</a>
 
-            <a
-              href="/contacto"
-              className="px-6 py-3 bg-white text-black rounded-full font-medium shadow-xl hover:scale-105 transition"
-            >
-              Contáctame
-            </a>
 
-            <a
-              href="/portfolio"
-              className="px-6 py-3 bg-black text-white rounded-full font-medium shadow-xl hover:scale-105 transition border border-white/20"
-            >
-              Portfolio
-            </a>
+<a href="/contacto" className="px-4 py-2 bg-black text-white shadow-lg rounded-full hover:-translate-y-1 transition">
+Contacto
+</a>
 
-          </div>
 
-        </div>
+</nav>
 
-      </section>
 
-      {/* STATS */}
-      <section className="py-16 px-8 text-center border-b border-black/10 bg-[#e9e1d2]">
+</header>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
 
-          <div>🎧 <p className="text-4xl font-bold">600K+</p><p>Streams</p></div>
-          <div>💿 <p className="text-4xl font-bold">200+</p><p>Beats</p></div>
-          <div>🚀 <p className="text-4xl font-bold">100+</p><p>Proyectos</p></div>
 
-        </div>
+<section className="h-[90vh] flex items-center justify-center text-center relative mt-16 overflow-hidden">
 
-      </section>
 
-      {/* PORTFOLIO */}
-      <section id="portfolio" className="py-24 px-8">
+<div
+className="absolute inset-0 bg-cover bg-center"
+style={{
+backgroundImage:"url('/covers/kmh 2.png')"
+}}
+/>
 
-        <h3 className="text-3xl font-bold mb-10 text-center">Portfolio</h3>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+<div className="absolute inset-0 bg-black/60"/>
 
-          <PortfolioCard
-            title="Mi Cadenon"
-            subtitle="Beat"
-            videoId="39_v5OlmkPw"
-            views="+150K"
-          />
 
-          <PortfolioCard
-            title="Reina de Pills"
-            subtitle="Mix & Master"
-            videoId="yUr6D1GPtHs"
-            views="+20K"
-          />
 
-          <PortfolioCard
-            title="Eleven"
-            subtitle="Beat"
-            videoId="TmrS2Ivhn6I"
-            views="+55K"
-          />
+<div className="relative z-10 px-6 max-w-3xl text-white">
 
-        </div>
 
-        <div className="text-center mt-10">
-          <a href="/portfolio" className="px-6 py-3 bg-black text-white rounded-full hover:scale-105 transition">
-            Ver más Portfolio
-          </a>
-        </div>
+<h2 className="text-4xl md:text-6xl font-bold leading-tight">
+Transformando ideas en sonido
+</h2>
 
-      </section>
 
-      {/* BEATS */}
-      <section id="beats" className="py-24 px-8 border-t border-black/10 bg-[#f3ecdf]">
+<p className="mt-6 text-white/80 text-lg">
+Mezcla, mastering y producción musical profesional.
+Más de 100 proyectos realizados. Más de 600.000 reproducciones en plataformas digitales.
+</p>
 
-        <h3 className="text-3xl font-bold mb-10 text-center">Catálogo</h3>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-          <BeatCard title="Rhodes" bpm="95 BPM • RnB" file="/beats/Rhodes 95.mp3" />
-          <BeatCard title="Juno" bpm="130 BPM • Trap" file="/beats/Juno 130Bpm.mp3" />
-          <BeatCard title="Slatt" bpm="140 BPM • Trap" file="/beats/Slatt 140.mp3" />
+<div className="flex flex-col md:flex-row gap-4 justify-center mt-10">
 
-        </div>
 
-        <div className="text-center mt-10">
-          <a href="/beats" className="px-6 py-3 bg-black text-white rounded-full hover:scale-105 transition">
-            Ver más Beats
-          </a>
-        </div>
+<a href="/contacto"
+className="px-6 py-3 bg-white text-black rounded-full font-medium shadow-xl hover:scale-105 transition">
+Contáctame
+</a>
 
-      </section>
 
-      {/* SERVICES */}
-      <section id="services" className="py-24 px-8 border-t border-black/10">
+<a href="/portfolio"
+className="px-6 py-3 bg-black text-white rounded-full font-medium shadow-xl hover:scale-105 transition border border-white/20">
+Portfolio
+</a>
 
-        <h3 className="text-3xl font-bold mb-10 text-center">Servicios</h3>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+</div>
 
-          <div className="p-6 bg-white shadow-md rounded-xl hover:shadow-xl transition">
 
-            <h4 className="text-xl font-semibold mb-3">Mix & Master</h4>
+</div>
 
-            <p className="text-sm text-black/60 mb-4">
-              Llevo tu canción a nivel profesional lista para Spotify, YouTube y plataformas digitales.
-            </p>
 
-            <ul className="text-sm text-black/70 space-y-1 mb-5">
-              <li>• Edición vocal</li>
-              <li>• Afinación</li>
-              <li>• Mezcla profesional</li>
-              <li>• Master final</li>
-            </ul>
+</section>
 
-            <a href="/contacto" className="inline-block px-5 py-2 bg-black text-white rounded-full text-sm">
-              Solicitar servicio
-            </a>
 
-          </div>
 
-          <div className="p-6 bg-white shadow-md rounded-xl hover:shadow-xl transition">
+<section id="portfolio" className="py-24 px-8">
 
-            <h4 className="text-xl font-semibold mb-3">Beats personalizados</h4>
 
-            <p className="text-sm text-black/60 mb-4">
-              Producción exclusiva adaptada a tu estilo artístico.
-            </p>
+<h3 className="text-3xl font-bold mb-10 text-center">
+Portfolio
+</h3>
 
-            <ul className="text-sm text-black/70 space-y-1 mb-5">
-              <li>• Producción a medida</li>
-              <li>• Uso comercial</li>
-              <li>• Diseño sonoro</li>
-              <li>• Alta calidad WAV/MP3</li>
-            </ul>
 
-            <a href="/contacto" className="inline-block px-5 py-2 bg-black text-white rounded-full text-sm">
-              Solicitar beat
-            </a>
 
-          </div>
+<div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-        </div>
 
-      </section>
+<PortfolioCard
+title="Mi Cadenon"
+subtitle="Beat"
+videoId="39_v5OlmkPw"
+views="+150K"
+/>
 
-      {/* CTA FINAL */}
-      <section className="py-24 px-8 text-center border-t border-black/10 bg-[#e9e1d2]">
 
-        <h3 className="text-3xl font-bold mb-6">
-          ¿Listo para trabajar juntos?
-        </h3>
+<PortfolioCard
+title="Reina de Pills"
+subtitle="Mix & Master"
+videoId="yUr6D1GPtHs"
+views="+20K"
+/>
 
-        <a
-          href="/contacto"
-          className="px-8 py-4 bg-black text-white rounded-full text-lg hover:scale-105 transition"
-        >
-          Contacto
-        </a>
 
-      </section>
+<PortfolioCard
+title="Eleven"
+subtitle="Beat"
+videoId="TmrS2Ivhn6I"
+views="+55K"
+/>
 
-    </main>
-  );
+
+</div>
+
+
+
+<div className="flex justify-center mt-10">
+
+<a
+href="/portfolio"
+className="px-8 py-3 bg-black text-white rounded-full shadow-lg hover:scale-105 transition"
+>
+Ver más Portfolio
+</a>
+
+</div>
+
+
+</section>
+
+
+
+<section className="py-24 px-8 bg-[#f3ecdf]">
+
+
+<h3 className="text-3xl font-bold mb-10 text-center">
+Catálogo
+</h3>
+
+
+
+<div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
+
+<BeatCard 
+title="Rhodes"
+bpm="95 BPM • RnB"
+file="/beats/Rhodes 95.mp3"
+/>
+
+
+<BeatCard 
+title="Juno"
+bpm="130 BPM • Trap"
+file="/beats/Juno 130Bpm.mp3"
+/>
+
+
+<BeatCard 
+title="Slatt"
+bpm="140 BPM • Trap"
+file="/beats/Slatt 140.mp3"
+/>
+
+
+
+</div>
+
+
+
+
+<div className="flex justify-center mt-10">
+
+<a
+href="/beats"
+className="px-8 py-3 bg-black text-white rounded-full shadow-lg hover:scale-105 transition"
+>
+Ver más Beats
+</a>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+{/* =========================
+   SERVICIOS
+========================= */}
+
+
+
+<section className="py-24 px-8">
+
+
+<h3 className="text-3xl font-bold mb-10 text-center">
+Servicios
+</h3>
+
+
+
+
+<div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+
+
+
+
+{/* MIX & MASTER */}
+
+
+<div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col">
+
+
+<h4 className="text-2xl font-semibold">
+Mix & Master
+</h4>
+
+
+
+<p className="text-black/60 mt-2">
+Mezcla profesional lista para plataformas digitales.
+</p>
+
+
+
+<ul className="mt-4 text-sm text-black/70 space-y-1">
+
+<li>✔ Balance profesional</li>
+<li>✔ EQ + compresión + efectos</li>
+<li>✔ Master listo para streaming</li>
+
+</ul>
+
+
+
+<p className="mt-5 font-bold">
+$40 - $80
+</p>
+
+
+
+<a
+href="https://wa.me/5493813527066"
+target="_blank"
+className="mt-auto mt-6 w-full flex justify-center items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full shadow-lg hover:scale-105 transition"
+>
+
+💬
+
+Contactar
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+{/* BEAT PERSONALIZADO */}
+
+
+
+<div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition flex flex-col">
+
+
+<h4 className="text-2xl font-semibold">
+Beat Personalizado
+</h4>
+
+
+
+<p className="text-black/60 mt-2">
+Producción hecha a medida para potenciar tu sonido.
+</p>
+
+
+
+<ul className="mt-4 text-sm text-black/70 space-y-1">
+
+
+<li>✔ Beat exclusivo</li>
+<li>✔ Revisiones incluidas</li>
+<li>✔ Uso comercial completo</li>
+
+
+</ul>
+
+
+
+<p className="mt-5 font-bold">
+Desde $80
+</p>
+
+
+
+<a
+href="https://wa.me/5493813527066"
+target="_blank"
+className="mt-auto mt-6 w-full flex justify-center items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-full shadow-lg hover:scale-105 transition"
+>
+
+💬
+
+Contactar
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div className="flex justify-center mt-10">
+
+<a
+href="/services"
+className="px-8 py-3 bg-black text-white rounded-full shadow-lg hover:scale-105 transition"
+>
+Ver más Servicios
+</a>
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+{/* CONTACTO FINAL */}
+
+
+
+<section className="py-24 px-8 bg-[#f3ecdf] text-center">
+
+
+<h3 className="text-4xl font-bold">
+¿Listo para trabajar tu sonido?
+</h3>
+
+
+
+<p className="mt-4 text-black/60 max-w-xl mx-auto">
+
+Contame tu idea, tu proyecto o la referencia que tenés en mente.
+
+</p>
+
+
+
+
+<a
+href="/contacto"
+className="inline-block mt-8 px-10 py-4 bg-black text-white rounded-full shadow-xl hover:scale-105 transition"
+>
+
+Ir a contacto
+
+</a>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+{/* WHATSAPP */}
+
+
+
+<a
+href="https://wa.me/5493813527066"
+target="_blank"
+rel="noopener noreferrer"
+className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-green-500 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition"
+>
+
+💬
+
+</a>
+
+
+
+
+
+</main>
+
+);
+
 }
